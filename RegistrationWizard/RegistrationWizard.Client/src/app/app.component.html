@@ -1,0 +1,67 @@
+<div *ngIf="step === 1" class="registration-wizard">
+  <form [formGroup]="step1Form" class="form-column">
+    <h3>Step 1: Account Details</h3>
+
+    <label>Email:</label>
+    <input formControlName="email" type="email" class="form-control"/>
+    <div *ngIf="step1Form.controls['email'].invalid && step1Form.controls['email'].touched" class="error">
+      Please enter a valid email.
+    </div>
+
+    <label>Password:</label>
+    <input formControlName="password" type="password" class="form-control"/>
+    <div *ngIf="step1Form.controls['password'].invalid && step1Form.controls['password'].touched" class="error">
+      Password must contain at least one digit and one letter.
+    </div>
+
+    <label>Confirm Password:</label>
+    <input formControlName="confirmPassword" type="password" class="form-control"/>
+    <div *ngIf="step1Form.controls['confirmPassword'].invalid && step1Form.controls['confirmPassword'].touched" class="error">
+      Passwords do not match.
+    </div>
+
+    <label>
+      <input id="agree" type="checkbox" formControlName="agree" /> I agree
+    </label>
+    <div *ngIf="step1Form.controls['agree'].invalid && step1Form.controls['agree'].touched" class="error">
+      You must agree to continue.
+    </div>
+
+    <button type="button" (click)="nextStep()" class="btn-primary">Next</button>
+  </form>
+</div>
+
+<div *ngIf="step === 2" class="registration-wizard">
+  <form [formGroup]="step2Form" class="form-column">
+    <h3>Step 2: Location Details</h3>
+
+    <label>Country:</label>
+    <select formControlName="country" (change)="onCountryChange($event)"  class="form-control">
+      <option *ngFor="let country of countries" [value]="country.id">
+        {{ country.name }}
+      </option>
+    </select>
+    <div *ngIf="step2Form.controls['country'].invalid && step2Form.controls['country'].touched" class="error">
+      Please select a country.
+    </div>
+
+    <label>Province:</label>
+    <select formControlName="province" class="form-control">
+      <option *ngFor="let province of provinces" [value]="province.id">
+        {{ province.name }}
+      </option>
+    </select>
+    <div *ngIf="step2Form.controls['province'].invalid && step2Form.controls['province'].touched" class="error">
+      Please select a province.
+    </div>
+
+    <button type="button" (click)="save()" class="btn-primary">Save</button>
+  </form>
+</div>
+<div *ngIf="step === 3" class="registration-wizard">
+  <div class="form-column">
+    <label *ngIf="successMessage">{{ successMessage }}</label>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <button type="button" (click)="reset()" class="btn-primary">OK</button>
+  </div>
+</div>
